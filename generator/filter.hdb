@@ -1,0 +1,74 @@
+const addFilter = require('./utils').addFilter;
+const registerFilter = require('./utils').registerFilter;
+
+/**
+ * Augment FfmpegCommand with the {{filterName}} function.
+ *
+ *
+ * @example
+ *  ffmpeg().{{filterName}}()
+ *    ...             // call filter configuration functions
+ *    .build()        // end filter configuration
+ *    ...
+ *    .applyFilters() // called once all filters have been configured
+ *
+ * @param  {FfmpegCommand} ffmpegCommand The fluent-ffmpeg constructor.
+ * @return {FfmpegCommand} The ffmpegCommand augmented with the {{filterName}} function.
+ */
+function {{filterName}}(ffmpegCommand) {
+  registerFilter(ffmpegCommand, '{{filterName}}', function() {
+    return new {{capitalize filterName}}Filter(this);
+  });
+  return ffmpegCommand;
+}
+
+/**
+ * Class exposing methods to configure the vstack filter in a builder pattern way.
+ *
+ * See {@link http://ffmpeg.org/ffmpeg-filters.html#vstack} for a description
+ * of each configuration option.
+ */
+class {{capitalize filterName}}Filter {
+  /**
+   * @param  {FfmpegCommand} ffmpegCommand The fluent-ffmpeg constructor.
+   */
+  constructor (ffmpeg) {
+    this.ffmpeg = ffmpeg;
+    {{#each params}}
+    {{capitalize ../filterName}}.prototype.with{{capitalize paramName}} = {{paramName}};
+    {{/each}}
+  }
+
+  {{#each params}}
+  /**
+   * {{formatComment paramDesc}}
+   * @param val
+   */
+  {{paramName}}(val) {
+    this.{{paramName}} = val;
+    return this;
+  }
+
+  {{/each}}
+
+  /**
+   * Creates this filter configuration and registers it in the ffmpeg instance.
+   * @return {ffmpegCommand} The ffmpeg instance.
+   */
+  build() {
+    let opt = {};
+    {{#each params}}
+    if (this.{{paramName}}) {
+      opt.{{paramName}} = this.{{paramName}};
+    }
+    {{/each}}
+
+    addFilter(this.ffmpeg, {
+      filter: '{{filterName}}',
+      options: opt
+    });
+    return this.ffmpeg;
+  }
+}
+
+module.exports.{{filterName}} = {{filterName}};
