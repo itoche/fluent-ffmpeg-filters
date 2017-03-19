@@ -1,7 +1,7 @@
 # fluent-ffmpeg-filters
 Extend fluent-ffmpeg with fluent API for adding ffmpeg filters, as listed [here](http://ffmpeg.org/ffmpeg-filters.html).
 
-`code` contains one file per filter. Each filter module exposes a function that augment the ffmpeg instance.
+`lib` directory contains one file per filter. Each filter module exposes a function that augment the ffmpeg instance.
 
 Here is an example of use with the `vstack` filter.
 
