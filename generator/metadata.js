@@ -100,12 +100,12 @@ function parse(html, callback) {
   }
 
   function logOpenTag(name) {
-    console.log(identStr() + '<' + name + '>');
+    //console.log(identStr() + '<' + name + '>');
     incLevel();
   }
   function logEndTag(name) {
     decLevel();
-    console.log(identStr() + '</' + name + '>');
+    //console.log(identStr() + '</' + name + '>');
   }
 
   var parser = new htmlparser.Parser({

@@ -2,9 +2,11 @@ const handlebars = require('handlebars');
 const fs = require('fs');
 const path = require('path');
 
-const templatePath = path.join(__dirname, '.', 'filter.hdb');
+const filterTemplatePath = path.join(__dirname, '.', 'filter.hdb');
+const indexTemplatePath = path.join(__dirname, '.', 'index.hdb');
 
-const template = handlebars.compile(fs.readFileSync(templatePath, "utf8"));
+const filterTemplate = handlebars.compile(fs.readFileSync(filterTemplatePath, "utf8"));
+const indexTemplate = handlebars.compile(fs.readFileSync(indexTemplatePath, "utf8"));
 
 handlebars.registerHelper('capitalize', function(text) {
   console.log(text);
@@ -15,9 +17,16 @@ handlebars.registerHelper('formatComment', function(text) {
   return text.replace(/(?:\r\n|\r|\n)/g, '\n   * ');
 });
 
-function render(filter, out) {
-  const gen = template(filter);
-  out(filter.filterName, gen);
+function renderFilter(filter, out, cb) {
+  const gen = filterTemplate(filter);
+  out(filter.filterName, gen, cb);
 }
 
-module.exports.render = render
+function renderIndex(filters, out, cb) {
+  const gen = indexTemplate(filters);
+  out('index', gen, cb);
+}
+
+
+module.exports.renderFilter = renderFilter
+module.exports.renderIndex = renderIndex
