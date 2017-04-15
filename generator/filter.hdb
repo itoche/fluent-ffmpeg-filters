@@ -35,7 +35,7 @@ class {{toIdentifier (capitalize filterName)}}Filter {
   constructor (ffmpeg) {
     this.ffmpeg = ffmpeg;
     {{#each params}}
-    {{capitalize ../filterName}}.prototype.with{{toIdentifier (capitalize paramName)}} = {{toIdentifier paramName}};
+    {{capitalize ../filterName}}Filter.prototype.with{{toIdentifier (capitalize paramName)}} = {{toIdentifier paramName}};
     {{/each}}
   }
 
