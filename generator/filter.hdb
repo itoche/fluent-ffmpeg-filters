@@ -15,9 +15,9 @@ const registerFilter = require('./utils').registerFilter;
  * @param  {FfmpegCommand} ffmpegCommand The fluent-ffmpeg constructor.
  * @return {FfmpegCommand} The ffmpegCommand augmented with the {{filterName}} function.
  */
-function {{filterName}}(ffmpegCommand) {
-  registerFilter(ffmpegCommand, '{{filterName}}', function() {
-    return new {{capitalize filterName}}Filter(this);
+function {{toIdentifier filterName}}(ffmpegCommand) {
+  registerFilter(ffmpegCommand, '{{toIdentifier filterName}}', function() {
+    return new {{toIdentifier (capitalize filterName)}}Filter(this);
   });
   return ffmpegCommand;
 }
@@ -28,14 +28,14 @@ function {{filterName}}(ffmpegCommand) {
  * See {@link http://ffmpeg.org/ffmpeg-filters.html#vstack} for a description
  * of each configuration option.
  */
-class {{capitalize filterName}}Filter {
+class {{toIdentifier (capitalize filterName)}}Filter {
   /**
    * @param  {FfmpegCommand} ffmpegCommand The fluent-ffmpeg constructor.
    */
   constructor (ffmpeg) {
     this.ffmpeg = ffmpeg;
     {{#each params}}
-    {{capitalize ../filterName}}.prototype.with{{capitalize paramName}} = {{paramName}};
+    {{capitalize ../filterName}}.prototype.with{{toIdentifier (capitalize paramName)}} = {{toIdentifier paramName}};
     {{/each}}
   }
 
@@ -44,8 +44,8 @@ class {{capitalize filterName}}Filter {
    * {{formatComment paramDesc}}
    * @param val
    */
-  {{paramName}}(val) {
-    this.{{paramName}} = val;
+  {{toIdentifier paramName}}(val) {
+    this.{{toIdentifier paramName}} = val;
     return this;
   }
 
@@ -58,8 +58,8 @@ class {{capitalize filterName}}Filter {
   build() {
     let opt = {};
     {{#each params}}
-    if (this.{{paramName}}) {
-      opt.{{paramName}} = this.{{paramName}};
+    if (this.{{toIdentifier paramName}}) {
+      opt['{{paramName}}'] = this.{{toIdentifier paramName}};
     }
     {{/each}}
 
@@ -71,4 +71,4 @@ class {{capitalize filterName}}Filter {
   }
 }
 
-module.exports.{{filterName}} = {{filterName}};
+module.exports.{{toIdentifier filterName}} = {{toIdentifier filterName}};

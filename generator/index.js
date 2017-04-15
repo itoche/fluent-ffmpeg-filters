@@ -5,14 +5,23 @@ const async = require('async');
 const fs = require('fs');
 const path = require('path');
 
+const INVALID_FILTERS = ['escaping', 'syntax'];
+
 async.waterfall([
   load,
+  clean,
   generateFilters,
   generateIndex
 ], function (err, results) {
   if (err) {console.error(err);}
   else {console.log(results);};
 });
+
+function clean(filters, callback) {
+  filters = filters.filter((item) => !INVALID_FILTERS.includes(item.filterName));
+
+  callback(null, filters);
+}
 
 function generateFilters(filters, callback) {
   async.each(filters, (filter, cb) => {

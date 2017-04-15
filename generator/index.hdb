@@ -1,3 +1,3 @@
 {{#each this}}
-const {{filterName}} = require('lib/{{filterName}}.js').{{filterName}};
+const {{toIdentifier filterName}} = require('./lib/{{filterName}}.js').{{toIdentifier filterName}};
 {{/each}}

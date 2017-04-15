@@ -17,6 +17,17 @@ handlebars.registerHelper('formatComment', function(text) {
   return text.replace(/(?:\r\n|\r|\n)/g, '\n   * ');
 });
 
+handlebars.registerHelper('toIdentifier', function(text) {
+
+  if (RESERVED_WORDS.includes(text) || !isNaN(text.charAt(0))) {
+    text = '_' + text;
+  }
+
+  return text.replace(/\W+/g, '_');
+});
+
+const RESERVED_WORDS = ['null', 'new', 'in', 'function'];
+
 function renderFilter(filter, out, cb) {
   const gen = filterTemplate(filter);
   out(filter.filterName, gen, cb);
