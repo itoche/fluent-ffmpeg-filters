@@ -15,7 +15,7 @@ class Parameter {
   }
 
   get name() {
-    return this.linked ? this.linked.name : this.paramName;
+    return this.paramName;
   }
 
   set description(desc) {
