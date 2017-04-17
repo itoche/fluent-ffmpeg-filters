@@ -15,7 +15,7 @@ class Parameter {
   }
 
   get name() {
-    return this.paramName;
+    return this.linked ? this.linked.name : this.paramName;
   }
 
   set description(desc) {
@@ -23,11 +23,16 @@ class Parameter {
   }
 
   get description() {
-    return this.paramDesc;
+    return this.linked ? this.linked.description : this.paramDesc;
+
   }
 
   addAllowedValue(param) {
     this.allowedValues.push(param);
+  }
+
+  setLinkedParam(param) {
+    this.linked = param;
   }
 
 }
@@ -128,7 +133,12 @@ function parse(html, callback) {
             if (captureAllowedValues) {
                 currentAllowedValue = new Parameter();
             } else {
-                currentParam = new Parameter();
+                let p = new Parameter();
+                if (currentParam) {
+                    currentParam.setLinkedParam(p);
+                    current.addParameter(currentParam);
+                }
+                currentParam = p;
             }
             captureText = true;
           }

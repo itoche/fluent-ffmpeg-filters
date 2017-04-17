@@ -41,11 +41,11 @@ class {{toIdentifier (capitalize filterName)}}Filter {
 
   {{#each params}}
   /**
-   * {{formatComment paramDesc}}
+   * {{formatComment description}}
    * @param val
    */
-  {{toIdentifier paramName}}(val) {
-    this.{{toIdentifier paramName}} = val;
+  {{toIdentifier name}}(val) {
+    this.{{toIdentifier name}} = val;
     return this;
   }
 

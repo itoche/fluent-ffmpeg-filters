@@ -25,10 +25,11 @@ program
     if (options.debug) {
       debugCore.enable(DEBUG_NAMESPACE);
     }
-    debug = debugCore(DEBUG_NAMESPACE);
     choosenFilters = choosenFilters.concat(filters);
   })
   .parse(process.argv);
+
+debug = debugCore(DEBUG_NAMESPACE);
 
 async.waterfall([
   load,
@@ -42,8 +43,9 @@ async.waterfall([
 
 function clean(filters, callback) {
   filters = removeFilters(filters, INVALID_FILTERS);
-  filters = keepFilters(filters, choosenFilters);
-
+  if (choosenFilters && choosenFilters.length > 0) {
+      filters = keepFilters(filters, choosenFilters);
+  }
   callback(null, filters);
 }
 
