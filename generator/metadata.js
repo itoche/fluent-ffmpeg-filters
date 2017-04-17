@@ -2,6 +2,7 @@ const htmlparser = require('htmlparser2');
 const afterLoad = require('after-load');
 const async = require('async');
 const request = require('request');
+const debug = require('debug')('fluent-ffmpeg-filters-generator');
 
 class Parameter {
 
@@ -51,15 +52,15 @@ class FilterMeta {
 }
 
 const filters = [];
-
+const URL = 'http://ffmpeg.org/ffmpeg-filters.html';
+let opt;
 
 function load(cb) {
+
   async.waterfall([
     function (callback) {
-      // afterLoad('http://ffmpeg.org/ffmpeg-filters.html', function(html){
-      //    callback(null, html);
-      // });
-      request('http://ffmpeg.org/ffmpeg-filters.html', function (error, response, body) {
+      debug('Fetching %s', URL);
+      request(URL, function (error, response, body) {
         callback(error, body);
       });
     },
@@ -147,7 +148,7 @@ function parse(html, callback) {
          if (log) logEndTag(tagname);
           if(tagname === "h3"){
               current.name = buffer.split(" ").pop();;
-              console.log('Filter ' + buffer);
+              if (log) console.log('Filter ' + buffer);
               filters.push(current);
               buffer = '';
               captureText = false;
@@ -202,8 +203,8 @@ function parse(html, callback) {
   parser.write(html);
   parser.end();
 
-  console.log(JSON.stringify(filters, null, 4));
-  console.log('Filters found: ' + filters.length);
+  //console.log(JSON.stringify(filters, null, 4));
+  debug('Filters found: ' + filters.length);
   callback(null, filters);
 }
 

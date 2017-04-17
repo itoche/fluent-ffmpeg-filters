@@ -4,8 +4,31 @@ const renderIndex = require('./render.js').renderIndex;
 const async = require('async');
 const fs = require('fs');
 const path = require('path');
+const program = require('commander');
+const version = require('../package.json').version;
+const DEBUG_NAMESPACE = 'fluent-ffmpeg-filters:generator';
+const debugCore = require('debug');
+let debug;
 
 const INVALID_FILTERS = ['escaping', 'syntax'];
+
+let cmdOptions = {};
+
+let choosenFilters = [];
+
+program
+  .version(version)
+  .usage('[options] [filters...]')
+  .option('-d, --debug', 'Logs debug information in the console')
+  .action((filters, options) => {
+    cmdOptions = options;
+    if (options.debug) {
+      debugCore.enable(DEBUG_NAMESPACE);
+    }
+    debug = debugCore(DEBUG_NAMESPACE);
+    choosenFilters = choosenFilters.concat(filters);
+  })
+  .parse(process.argv);
 
 async.waterfall([
   load,
@@ -18,12 +41,24 @@ async.waterfall([
 });
 
 function clean(filters, callback) {
-  filters = filters.filter((item) => !INVALID_FILTERS.includes(item.filterName));
+  filters = removeFilters(filters, INVALID_FILTERS);
+  filters = keepFilters(filters, choosenFilters);
 
   callback(null, filters);
 }
 
+function removeFilters(filters, toRemove) {
+  return filters.filter((item) => !toRemove.includes(item.filterName));
+}
+
+function keepFilters(filters, toKeep) {
+  return filters.filter((item) => toKeep.includes(item.filterName));
+}
+
 function generateFilters(filters, callback) {
+
+  debug('Generating filters...\n%s', JSON.stringify(filters, null, 4));
+
   async.each(filters, (filter, cb) => {
     renderFilter(filter, writeToFile, cb);
   }, (err) => {
@@ -32,7 +67,7 @@ function generateFilters(filters, callback) {
 }
 
 function generateIndex(filters, callback) {
-  console.log('generateIndex');
+  debug('Generating index.js file...');
   async.waterfall([
     (cb) => {
       renderIndex(filters, writeToFile, cb);
@@ -50,7 +85,7 @@ function writeToFile(fileName, fileContent, cb) {
   }
   const filePath = path.join(__dirname, '..', 'tmp', fileName + '.js');
 
-  console.log('create filte ' + filePath);
+  debug('Outputs filter in ' + filePath);
 
   fs.writeFile(filePath, fileContent, function(err) {
     if(err) {

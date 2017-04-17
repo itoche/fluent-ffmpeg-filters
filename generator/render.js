@@ -9,7 +9,6 @@ const filterTemplate = handlebars.compile(fs.readFileSync(filterTemplatePath, "u
 const indexTemplate = handlebars.compile(fs.readFileSync(indexTemplatePath, "utf8"));
 
 handlebars.registerHelper('capitalize', function(text) {
-  console.log(text);
   return text.charAt(0).toUpperCase() + text.slice(1);
 });
 
