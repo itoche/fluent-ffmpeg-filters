@@ -45,7 +45,7 @@ class {{toIdentifier (capitalize filterName)}}Filter {
    * @param val
    */
   {{toIdentifier name}}(val) {
-    this.{{toIdentifier name}} = val;
+    this._{{toIdentifier name}} = val;
     return this;
   }
 
@@ -58,8 +58,8 @@ class {{toIdentifier (capitalize filterName)}}Filter {
   build() {
     let opt = {};
     {{#each params}}
-    if (this.{{toIdentifier paramName}}) {
-      opt['{{paramName}}'] = this.{{toIdentifier paramName}};
+    if (this._{{toIdentifier paramName}}) {
+      opt['{{paramName}}'] = this._{{toIdentifier paramName}};
     }
     {{/each}}
 
