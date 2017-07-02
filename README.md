@@ -26,5 +26,11 @@ These functions are available on each filter.
 #### build(): register the filter configuration
 The `build()` function is to be called once the filter function and its configuration function have all been called. Calling `build()` registers the filter configuration on the ffmpeg instance.
 
-#### applyFilters(): configure all filters
+#### applyComplexFilter(): configure all filters
 Apply the configurations of all filters to the ffmpeg instance. Call it only once.
+
+#### applyVideoFilters(): configure video filters
+Apply the configurations of video filters to the ffmpeg instance. 
+
+#### applyAudioFilters(): configure audio filters
+Apply the configurations of audio filters to the ffmpeg instance. 
