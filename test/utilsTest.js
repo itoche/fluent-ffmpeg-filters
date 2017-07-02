@@ -12,8 +12,12 @@ describe('utils', function() {
       const instance = ffmpeg();
       assert(instance.testFilter);
       assert(typeof instance.testFilter === 'function');
-      assert(instance.applyFilters);
-      assert(typeof instance.applyFilters === 'function');
+      assert(instance.applyComplexFilter);
+      assert(typeof instance.applyComplexFilter === 'function');
+      assert(instance.applyAudioFilters);
+      assert(typeof instance.applyAudioFilters === 'function');
+      assert(instance.applyVideoFilters);
+      assert(typeof instance.applyVideoFilters === 'function');
       assert.equal(instance.testFilter(), 'Hello');
     });
   });
