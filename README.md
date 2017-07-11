@@ -17,7 +17,7 @@ ffmpeg('./one.jpg')
   .input(2)
   .shortest(0)
   .build()
-  .applyFilters()
+  .applyVideoFilters()
 ```
 
 ### Generic functions
