@@ -1,3 +1,6 @@
+[![npm version](https://badge.fury.io/js/fluent-ffmpeg-filters.svg)](https://badge.fury.io/js/fluent-ffmpeg-filters)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/itoche/fluent-ffmpeg-filters.js/master/LICENSE)
+
 # fluent-ffmpeg-filters
 Extend fluent-ffmpeg with fluent API for adding ffmpeg filters, as listed [here](http://ffmpeg.org/ffmpeg-filters.html).
 
